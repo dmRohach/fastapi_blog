@@ -1,0 +1,9 @@
+alembic
+fastapi
+psycopg2-binary
+pydantic
+SQLAlchemy
+uvicorn
+python-jose
+passlib[bcrypt]
+python-multipart
