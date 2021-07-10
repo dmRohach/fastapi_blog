@@ -1,5 +1,6 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from datetime import date
 
 from ..database import get_session
@@ -13,11 +14,14 @@ class AnalyticService:
     def daily_analytics(self, date_from: date, date_to: date, user_id: int) -> dict:
         likes = (
                 self.session
-                .query(tables.Like)
+                .query(tables.Like.date, func.count(tables.Like.id))
                 .filter(
                     tables.Like.user_id == user_id,
                     tables.Like.date >= date_from,
                     tables.Like.date <= date_to
                 )
+                .group_by(tables.Like.date)
                 .all())
-        return {'likes': len(likes)}
+        print(likes)
+
+        return {Date: count for Date, count in likes}
